@@ -137,7 +137,7 @@ In a second time, this part has an importance on the security side, we will add 
         self.Message1.configure(width=256)
         
         
-        img = Image.open("C:/Users/Najla/OneDrive/Desktop/Ojeimi/ENSTA Bretagne/FISE 3A/Projet 3A/MyProject/Photos for Interface/site_logo (1).png")
+        img = Image.open("./Photos for Interface/site_logo (1).png")
         image1 = img.resize((200, 200), Image.ANTIALIAS)
         test = ImageTk.PhotoImage(img)
         label1 = tkinter.Label(image=test)
