@@ -33,13 +33,13 @@ def generate():
     print('interfacetcl_support.generate')
     sys.stdout.flush()
 
-def open():
-    print('interfacetcl_support.open')
+def validate():
+    print('interfacetcl_support.validate')
     sys.stdout.flush()
 
-def submit():
-    print('interfacetcl_support.submit')
-    sys.stdout.flush()
+#def submit():
+#    print('interfacetcl_support.submit')
+#    sys.stdout.flush()
 
 def destroy_window():
     # Function which closes the window.
