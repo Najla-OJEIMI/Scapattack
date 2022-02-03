@@ -243,7 +243,7 @@ In a second time, this part has an importance on the security side, we will add 
         self.destinationtextbox.configure(selectforeground="white")
 
         def generate_command():
-            protocol = self.TCombobox1Ptotocol.selection_get()
+            protocol = self.TCombobox1Ptotocol.get()
             source = self.sourcetextbox.get()
             destination = self.destinationtextbox.get()
             PortNumber = self.Port_nbTextbox.get()
@@ -286,18 +286,57 @@ In a second time, this part has an importance on the security side, we will add 
                     #elif protocol == "UDP":
                     #    send(IP(src=source, dst=destination) / UDP())
                     elif protocol == "DNS":
-                        PortNumber = 53
-                        dns_req = IP(src=source, dst=destination)/ UDP(dport=PortNumber)/DNS()
-                        sr1(dns_req, verbose=0)
-                        # print(answer[DNS].summary())
-
-                        # send(IP(src=source, dst=destination) / DNS())
-                        messagebox.showinfo("Success!","Your Request Processed successfully. You can open wireshark in parallel to view the packets generated!")
+                        if PortNumber == "53":
+                            dns_req = IP(src=source, dst=destination)/ UDP(dport=PortNumber)/DNS()
+                            sr1(dns_req, verbose=0)
+                            messagebox.showinfo("Success!","Your Request Processed successfully. You can open wireshark in parallel to view the packets generated!")
+                        else:
+                            messagebox.showerror("Error occurred while generating the packet","The value your entered for the port is not a valid number for the protocol you choose, Please re-enter the valid value!") 
                     else:
                         print("Protocol not found")
 
                     #messagebox.showinfo("Success!","Your Request Processed successfully. You can open wireshark in parallel to view the packets generated!")
         
+        def validate_command():
+            protocol = self.TCombobox1Ptotocol.selection_get()
+            source = self.sourcetextbox.get()
+            destination = self.destinationtextbox.get()
+            PortNumber = self.Port_nbTextbox.get()
+            print("The IP Source is:",source)
+            print("The IP Destination is:",destination)
+            print("The protocol name is:",protocol)
+            #print("The Port Number is:",PortNumber)
+            print(check_ip(source))
+            resultatsource = check_ip(source)
+            resultatdestination = check_ip(destination)
+            #resultatPortNb = check_port(PortNumber)
+            if resultatsource == False or resultatdestination == False:
+                if resultatsource == False and resultatdestination == True:
+                    messagebox.showerror("Error occurred","The value your entered for the source is not valid for an IP@, Please re-enter the valid value!")
+                if resultatsource == True and resultatdestination == False:
+                    messagebox.showerror("Error occurred","The value your entered for the destination is not valid for an IP@, Please re-enter the valid value!")
+                if resultatsource == False and resultatdestination == False:
+                    messagebox.showerror("Error occurred","The value your entered for the source and destination is not valid for an IP@, Please re-enter the valid value!")
+            else:
+                if resultatsource == True or resultatdestination == True:
+                    if protocol == "ICMP":
+                        self.Port_nbTextbox.insert(END,1)
+                        messagebox.showinfo("Success!","Your can generate your packet safely by clicking on the Generate button!")
+                        self.Button1.configure(state='normal')
+                        self.Button2.configure(state='disabled')
+                    
+                    elif protocol == "DNS":
+                        self.Port_nbTextbox.insert(END,53)
+                        messagebox.showinfo("Success!","Your can generate your packet safely by clicking on the Generate button!")
+                        self.Button1.configure(state='normal')
+                        self.Button2.configure(state='disabled')
+                    else:
+                        print("Protocol not found")
+                        messagebox.showerror("Error occurred while validating the information for generating the packet","Please re-enter the valid value(s)!")
+
+
+
+
 
         def check_ip(IP):
             try:
@@ -319,7 +358,7 @@ In a second time, this part has an importance on the security side, we will add 
 
 
         self.Button1 = tk.Button(self.Frame1)
-        self.Button1.place(relx=0.659, rely=0.654, height=44, width=127)
+        self.Button1.place(relx=0.84, rely=0.82, height=44, width=87)
         self.Button1.configure(activebackground="#ececec")
         self.Button1.configure(activeforeground="#000000")
         self.Button1.configure(background="#d9d9d9")
@@ -329,6 +368,7 @@ In a second time, this part has an importance on the security side, we will add 
         self.Button1.configure(highlightbackground="#d9d9d9")
         self.Button1.configure(highlightcolor="black")
         self.Button1.configure(pady="0")
+        self.Button1.configure(state='disabled')
         self.Button1.configure(text='''Generate''', command=generate_command)
 
         self.Button2 = tk.Button(self.Frame1)
@@ -336,27 +376,27 @@ In a second time, this part has an importance on the security side, we will add 
         self.Button2.configure(activebackground="#ececec")
         self.Button2.configure(activeforeground="#000000")
         self.Button2.configure(background="#d9d9d9")
-        self.Button2.configure(command=interfacetcl_support.open)
+        self.Button2.configure(command=interfacetcl_support.validate)
         self.Button2.configure(disabledforeground="#a3a3a3")
         self.Button2.configure(foreground="#000000")
         self.Button2.configure(highlightbackground="#d9d9d9")
         self.Button2.configure(highlightcolor="black")
         self.Button2.configure(pady="0")
-        self.Button2.configure(state='disabled')
-        self.Button2.configure(text='''Open''')
+        #self.Button2.configure(state='disabled')
+        self.Button2.configure(text='''Validate''', command=validate_command)
 
-        self.Button3 = tk.Button(self.Frame1)
-        self.Button3.place(relx=0.84, rely=0.82, height=44, width=87)
-        self.Button3.configure(activebackground="#ececec")
-        self.Button3.configure(activeforeground="#000000")
-        self.Button3.configure(background="#d9d9d9")
-        self.Button3.configure(command=interfacetcl_support.submit)
-        self.Button3.configure(disabledforeground="#a3a3a3")
-        self.Button3.configure(foreground="#000000")
-        self.Button3.configure(highlightbackground="#d9d9d9")
-        self.Button3.configure(highlightcolor="black")
-        self.Button3.configure(pady="0")
-        self.Button3.configure(text='''Submit''')
+        #self.Button3 = tk.Button(self.Frame1)
+        #self.Button3.place(relx=0.84, rely=0.82, height=44, width=87)
+        #self.Button3.configure(activebackground="#ececec")
+        #self.Button3.configure(activeforeground="#000000")
+        #self.Button3.configure(background="#d9d9d9")
+        #self.Button3.configure(command=interfacetcl_support.submit)
+        #self.Button3.configure(disabledforeground="#a3a3a3")
+        #self.Button3.configure(foreground="#000000")
+        #self.Button3.configure(highlightbackground="#d9d9d9")
+        #self.Button3.configure(highlightcolor="black")
+        #self.Button3.configure(pady="0")
+        #self.Button3.configure(text='''Submit''')
 
         self.Port_nbTextbox = tk.Entry(self.Frame1)
         self.Port_nbTextbox.place(relx=0.683, rely=0.785, height=30, relwidth=0.108)
