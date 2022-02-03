@@ -322,15 +322,15 @@ In a second time, this part has an importance on the security side, we will add 
                 if resultatsource == True or resultatdestination == True:
                     if protocol == "ICMP":
                         self.Port_nbTextbox.insert(END,1)
-                        self.Port_nbTextbox.bind("<key>", lambda a: "break")
-                        self.Port_nbTextbox.pack()
                         messagebox.showinfo("Success!","Your can generate your packet safely by clicking on the Generate button!")
+                        self.Button1.configure(state='normal')
+                        self.Button2.configure(state='disabled')
                     
                     elif protocol == "DNS":
                         self.Port_nbTextbox.insert(END,53)
-                        self.Port_nbTextbox.bind("<key>", lambda a: "break")
-                        self.Port_nbTextbox.pack()
                         messagebox.showinfo("Success!","Your can generate your packet safely by clicking on the Generate button!")
+                        self.Button1.configure(state='normal')
+                        self.Button2.configure(state='disabled')
                     else:
                         print("Protocol not found")
                         messagebox.showerror("Error occurred while validating the information for generating the packet","Please re-enter the valid value(s)!")
