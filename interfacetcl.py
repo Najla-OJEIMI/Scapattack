@@ -286,8 +286,8 @@ In a second time, this part has an importance on the security side, we will add 
                     #elif protocol == "UDP":
                     #    send(IP(src=source, dst=destination) / UDP())
                     elif protocol == "DNS":
-                        # PortNumber = 53
-                        dns_req = IP(src=source, dst=destination)/ UDP(dport=53)/DNS()
+                        PortNumber = 53
+                        dns_req = IP(src=source, dst=destination)/ UDP(dport=PortNumber)/DNS()
                         sr1(dns_req, verbose=0)
                         # print(answer[DNS].summary())
 
