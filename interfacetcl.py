@@ -286,13 +286,12 @@ In a second time, this part has an importance on the security side, we will add 
                     #elif protocol == "UDP":
                     #    send(IP(src=source, dst=destination) / UDP())
                     elif protocol == "DNS":
-                        # PortNumber = 53
-                        dns_req = IP(src=source, dst=destination)/ UDP(dport=53)/DNS()
-                        sr1(dns_req, verbose=0)
-                        # print(answer[DNS].summary())
-
-                        # send(IP(src=source, dst=destination) / DNS())
-                        messagebox.showinfo("Success!","Your Request Processed successfully. You can open wireshark in parallel to view the packets generated!")
+                        if PortNumber == "53":
+                            dns_req = IP(src=source, dst=destination)/ UDP(dport=PortNumber)/DNS()
+                            sr1(dns_req, verbose=0)
+                            messagebox.showinfo("Success!","Your Request Processed successfully. You can open wireshark in parallel to view the packets generated!")
+                        else:
+                            messagebox.showerror("Error occurred while generating the packet","The value your entered for the port is not a valid number for the protocol you choose, Please re-enter the valid value!") 
                     else:
                         print("Protocol not found")
 
