@@ -165,7 +165,7 @@ In a second time, this part has an importance on the security side, we will add 
         self.TCombobox1Ptotocol = ttk.Combobox(self.Frame1)
         self.TCombobox1Ptotocol.place(relx=0.714, rely=0.231, relheight=0.053
                 , relwidth=0.243)
-        self.value_list = ['TCP','ICMP','UDP','DNS','FTP','SMTP','HTTP','Ethernet','Telnet',]
+        self.value_list = ['TCP','ICMP','UDP','DNS','ARP','FTP','SMTP','HTTP','Ethernet','Telnet']
         self.TCombobox1Ptotocol.configure(values=self.value_list)
         self.TCombobox1Ptotocol.configure(textvariable=interfacetcl_support.combobox)
         self.TCombobox1Ptotocol.configure(takefocus="")
@@ -293,6 +293,15 @@ In a second time, this part has an importance on the security side, we will add 
                             messagebox.showinfo("Success!","Your Request Processed successfully. You can open wireshark in parallel to view the packets generated!")
                         else:
                             messagebox.showerror("Error occurred while generating the packet","The value your entered for the port is not a valid number for the protocol you choose, Please re-enter the valid value!") 
+                    
+                    elif protocol == "ARP":
+                        if PortNumber == "5":
+                            arp_req = ARP(op = "who-has", psrc=str(source), pdst=str(destination))
+                            send(arp_req)
+                            messagebox.showinfo("Success!","Your Request Processed successfully. You can open wireshark in parallel to view the packets generated!")
+                        else:
+                            messagebox.showerror("Error occurred while generating the packet","The value your entered for the port is not a valid number for the protocol you choose, Please re-enter the valid value!") 
+
                     else:
                         print("Protocol not found")
 
@@ -331,6 +340,13 @@ In a second time, this part has an importance on the security side, we will add 
                         messagebox.showinfo("Success!","Your can generate your packet safely by clicking on the Generate button!")
                         self.Button1.configure(state='normal')
                         self.Button2.configure(state='disabled')
+
+                    elif protocol == "ARP":
+                        self.Port_nbTextbox.insert(END,5)
+                        messagebox.showinfo("Success!","Your can generate your packet safely by clicking on the Generate button!")
+                        self.Button1.configure(state='normal')
+                        self.Button2.configure(state='disabled')
+
                     else:
                         print("Protocol not found")
                         messagebox.showerror("Error occurred while validating the information for generating the packet","Please re-enter the valid value(s)!")
